@@ -26,6 +26,10 @@ public struct OpenRouterRequestChatMessage: Codable, Sendable {
             self.image = base64String
         }
         
+        public init(base64EncodedString: String) {
+            self.image = base64EncodedString
+        }
+        
         private enum CodingKeys: String, CodingKey {
             case image = "url"
         }
