@@ -21,7 +21,7 @@ public struct OpenRouterRequestChatMessage: Codable, Sendable {
     public struct Base64Image: Codable, Sendable {
         public let image: String
         
-        init(data: Data, mediaType: String = "image/jpeg") {
+        public init(data: Data, mediaType: String = "image/jpeg") {
             let base64String = "data:\(mediaType);base64,\(data.base64EncodedString())"
             self.image = base64String
         }
