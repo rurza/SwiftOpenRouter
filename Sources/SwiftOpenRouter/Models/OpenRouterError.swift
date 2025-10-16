@@ -13,7 +13,7 @@ public enum OpenRouterError: LocalizedError {
         case .invalidStatusCode(let code):
             return "Invalid status code: \(code)"
         case .errorResponse(let response):
-            return "API Error (\(response.error.code ?? -1)): \(response.error.message)"
+            return "API Error (\(response.error.code)): \(response.error.message)"
         case .invalidResponse:
             return "Invalid response from server"
         case .missingContent:
