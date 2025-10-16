@@ -54,7 +54,7 @@ public struct ChatCompletionRequest: Encodable, Sendable {
     }
 
     public let model: String
-    public let messages: [OpenRouterChatMessage]
+    public let messages: [OpenRouterRequestChatMessage]
     public let stream: Bool?
     public let maxTokens: Int?
     public let temperature: Double?
@@ -77,7 +77,7 @@ public struct ChatCompletionRequest: Encodable, Sendable {
 
     public init(
         model: String,
-        messages: [OpenRouterChatMessage],
+        messages: [OpenRouterRequestChatMessage],
         stream: Bool? = nil,
         maxTokens: Int? = nil,
         temperature: Double? = nil,
