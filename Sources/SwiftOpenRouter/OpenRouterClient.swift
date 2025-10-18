@@ -157,4 +157,10 @@ public final actor OpenRouterClient {
     public func stopStreaming() async {
         await streamingClient.stopStreaming()
     }
+    
+    public func getUserModels() async throws -> ListAvailableModelsResponse {
+        let url = OpenRouterEndpoint.userModels.url(baseURL: baseURL)
+        let request = OpenRouterRequest(method: .get, url: url, body: nil, headers: [:])
+        return try await performDecodableRequest(request)
+    }
 }
