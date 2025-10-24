@@ -13,8 +13,42 @@ public struct OpenRouterRequestChatMessage: Codable, Sendable {
         case base64Image(Base64Image)
         
         private enum CodingKeys: String, CodingKey {
+            case type
             case text
             case base64Image = "image_url"
+        }
+        
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            
+            switch self {
+            case .text(let string):
+                try container.encode("text", forKey: .type)
+                try container.encode(string, forKey: .text)
+            case .base64Image(let image):
+                try container.encode("image_url", forKey: .type)
+                try container.encode(image, forKey: .base64Image)
+            }
+        }
+        
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            let type = try container.decode(String.self, forKey: .type)
+            
+            switch type {
+            case "text":
+                let text = try container.decode(String.self, forKey: .text)
+                self = .text(text)
+            case "image_url":
+                let image = try container.decode(Base64Image.self, forKey: .base64Image)
+                self = .base64Image(image)
+            default:
+                throw DecodingError.dataCorruptedError(
+                    forKey: .type,
+                    in: container,
+                    debugDescription: "Unknown content type: \(type)"
+                )
+            }
         }
     }
     
@@ -34,10 +68,10 @@ public struct OpenRouterRequestChatMessage: Codable, Sendable {
             case image = "url"
         }
     }
-
+    
     public let role: OpenRouterChatMessage.Role
     public let content: [Content]
-
+    
     public init(role: OpenRouterChatMessage.Role, content: [Content]) {
         self.role = role
         self.content = content
@@ -51,10 +85,10 @@ public struct OpenRouterChatMessage: Codable, Sendable {
         case system
         case tool
     }
-
+    
     public let role: Role
     public let content: String
-
+    
     public init(role: Role, content: String) {
         self.role = role
         self.content = content
